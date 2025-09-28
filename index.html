@@ -19,14 +19,19 @@
     <div id="result"></div>
     <script>
       function convert(num) {
-        x = Math.log10(num / 6.7);
-        return x;
+        base = 6.7;
+        if (num < 0) base = -6.7;
+        x = Math.log10(Math.abs(num) / 6.7);
+        return [base, x];
       }
 
       function multiplication_convert(num) {
         excess = num % 67;
         multiplier = (num - excess) / 67;
-        return [multiplier, excess];
+
+        symbol = "+";
+        if (num < 0) symbol = "-";
+        return [multiplier, Math.abs(excess), symbol];
       }
 
       document.querySelector("form").addEventListener("submit", (e) => {
@@ -38,9 +43,9 @@
         const additionResult = multiplication_convert(number);
 
         document.getElementById("result").innerText =
-          `Scientific notation: 6.7 * 10^${scientificResult}\n` +
+          `Scientific notation: ${scientificResult[0]} * 10^${scientificResult[1]}\n` +
           `Multiplication: 6.7 * ${multiplicationResult}\n` +
-          `Addition: 67 * ${additionResult[0]} + ${additionResult[1]}`;
+          `Addition: 67 * ${additionResult[0]} ${additionResult[2]} ${additionResult[1]}`;
       });
     </script>
   </body>

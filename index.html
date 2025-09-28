@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>67</title>
-    <link rel="stylesheet" href="../static/styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div id="top_panel">
@@ -29,25 +29,18 @@
         return [multiplier, excess];
       }
 
-      document.querySelector("form").addEventListener("submit", async (e) => {
+      document.querySelector("form").addEventListener("submit", (e) => {
         e.preventDefault();
-        const number = document.getElementById("number").value;
-        const response = await fetch("/convert", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ number }),
-        });
-        const data = await response.json();
-        document.getElementById(
-          "result"
-        ).innerText = `Scientific notation: 6.7 * 10^${convert(
-          parseFloat(data.result)
-        )}\n Multiplication: 6.7 * ${parseFloat(data.result) / 6.7} 
-		 Addition: 67 * ${multiplication_convert(parseFloat(data.result))[0]} + ${
-          multiplication_convert(parseFloat(data.result))[1]
-        }`;
+        const number = parseFloat(document.getElementById("number").value);
+
+        const scientificResult = convert(number);
+        const multiplicationResult = number / 6.7;
+        const additionResult = multiplication_convert(number);
+
+        document.getElementById("result").innerText =
+          `Scientific notation: 6.7 * 10^${scientificResult}\n` +
+          `Multiplication: 6.7 * ${multiplicationResult}\n` +
+          `Addition: 67 * ${additionResult[0]} + ${additionResult[1]}`;
       });
     </script>
   </body>

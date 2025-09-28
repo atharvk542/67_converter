@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>67</title>
+    <link rel="stylesheet" href="../static/styles.css" />
+  </head>
+  <body>
+    <div id="top_panel">
+      <h1>Welcome to the 67 converter!</h1>
+      <form>
+        <label for="number" style="align-self: center">Enter a number:</label>
+        <input type="text" id="number" name="number" required />
+        <button type="submit" id="submit_button">Convert</button>
+      </form>
+    </div>
+
+    <div id="result"></div>
+    <script>
+      function convert(num) {
+        x = Math.log10(num / 6.7);
+        return x;
+      }
+
+      function multiplication_convert(num) {
+        excess = num % 67;
+        multiplier = (num - excess) / 67;
+        return [multiplier, excess];
+      }
+
+      document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const number = document.getElementById("number").value;
+        const response = await fetch("/convert", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ number }),
+        });
+        const data = await response.json();
+        document.getElementById(
+          "result"
+        ).innerText = `Scientific notation: 6.7 * 10^${convert(
+          parseFloat(data.result)
+        )}\n Multiplication: 6.7 * ${parseFloat(data.result) / 6.7} 
+		 Addition: 67 * ${multiplication_convert(parseFloat(data.result))[0]} + ${
+          multiplication_convert(parseFloat(data.result))[1]
+        }`;
+      });
+    </script>
+  </body>
+</html>
